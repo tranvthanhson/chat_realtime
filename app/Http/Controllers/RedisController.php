@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Message;
 use App\Events\RedisEvent;
+use App\Mail\PaymentSucceed;
+use Mail;
 
 class RedisController extends Controller
 {
@@ -24,5 +26,12 @@ class RedisController extends Controller
         );
 
         return redirect()->back();
+    }
+
+    public function sendMail(Request $request)
+    {
+        Mail::to('sonvotu96@gmail.com')->send(new PaymentSucceed(Message::first()));
+
+        return 'sent';
     }
 }
