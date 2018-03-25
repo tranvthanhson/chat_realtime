@@ -34,4 +34,39 @@ class RedisController extends Controller
 
         return 'sent';
     }
+
+    public function camera(Request $request)
+    {
+        return view('webcam');
+    }
+
+    public function base64_to_jpeg($base64_string, $output_file) {
+    // open the output file for writing
+        $ifp = fopen( $output_file, 'wb' );
+
+    // split the string on commas
+    // $data[ 0 ] == "data:image/png;base64"
+    // $data[ 1 ] == <actual base64 string>
+        $data = explode( ',', $base64_string );
+
+    // we could add validation here with ensuring count( $data ) > 1
+        fwrite( $ifp, base64_decode( $data[ 1 ] ) );
+
+    // clean up the file resource
+        fclose( $ifp );
+
+        return $output_file;
+    }
+
+    public function image(Request $request)
+    {
+        $img = $request->data;
+        // $img = $_POST['img'];
+        $img = str_replace('data:image/jpeg;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $image = 'image-' . time() . '.png';
+        file_put_contents($image, $data);
+        // return $this->base64_to_jpeg($request->data, 'abc.jpg');
+    }
 }
