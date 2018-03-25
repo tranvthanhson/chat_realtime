@@ -23,7 +23,7 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 		<script>
-			var socket = io('http://localhost:6001');
+			var socket = io(window.location.origin + ':6001');
 
 			socket.on('chat:message', function(data) {
 				console.log(data);

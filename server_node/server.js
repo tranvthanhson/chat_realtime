@@ -12,7 +12,7 @@ io.on('connection', function (socket) {
 })
 
 var Redis = require('ioredis')
-var redis = new Redis(1000)
+var redis = new Redis(6379)
 
 redis.psubscribe("*", function(error, count){
 
