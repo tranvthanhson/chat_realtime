@@ -16,6 +16,7 @@ class PaymentSucceed extends Mailable
 
     /**
         https://myaccount.google.com/security
+        Generate app pass
         https://support.google.com/accounts/answer/185833?hl=en
      */
     /**
