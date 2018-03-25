@@ -10,19 +10,19 @@ class RedisController extends Controller
 {
     public function index()
     {
-    	$messages = Message::all();
+        $messages = Message::all();
 
-    	return view('chat', compact('messages'));
+        return view('chat', compact('messages'));
     }
 
     public function sendMessage(Request $request)
-    {   
-    	$messages = Message::create($request->all());
+    {
+        $messages = Message::create($request->all());
 
-    	event(
-    		$e = new RedisEvent($messages)
-    	);
+        event(
+            $e = new RedisEvent($messages)
+        );
 
-    	return redirect()->back();
+        return redirect()->back();
     }
 }
