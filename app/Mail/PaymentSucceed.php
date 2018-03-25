@@ -35,6 +35,6 @@ class PaymentSucceed extends Mailable
      */
     public function build()
     {
-        return $this->from('sonvotu96@gmail.com', 'LONG LONG')->view('mails.welcome')->subject('Thanh Son');
+        return $this->from('sonvotu96@gmail.com', 'Boss Long')->to('quoclongdng@gmail.com')->view('mails.welcome')->subject('Thanh Son');
     }
 }

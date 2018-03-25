@@ -30,7 +30,7 @@ class RedisController extends Controller
 
     public function sendMail(Request $request)
     {
-        Mail::to('sonvotu96@gmail.com')->send(new PaymentSucceed(Message::first()));
+        Mail::send(new PaymentSucceed(Message::first()));
 
         return 'sent';
     }
