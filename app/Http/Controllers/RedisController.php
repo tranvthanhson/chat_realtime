@@ -9,9 +9,14 @@ use App\Events\RedisEvent;
 class RedisController extends Controller
 {
     public $length = 10;
+
+    public function getLastMessages($length)
+    {
+        return Message::orderBy('id', 'desc')->take($length)->get();
+    }
     public function index()
     {
-        $messages = Message::orderBy('id', 'desc')->take(5)->get();
+        $messages = $this->getLastMessages($this->length);
 
         return view('chat', compact('messages'));
     }
@@ -24,7 +29,14 @@ class RedisController extends Controller
             $e = new RedisEvent($messages)
         );
 
-        $messages = Message::orderBy('id', 'desc')->take(5)->get();
+        $messages = $this->getLastMessages($this->length);
+
+        return view('chat-partial', compact('messages'));
+    }
+
+    public function getMessage(Request $request)
+    {
+        $messages = $this->getLastMessages($this->length);
 
         return view('chat-partial', compact('messages'));
     }

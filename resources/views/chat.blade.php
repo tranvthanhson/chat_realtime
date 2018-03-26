@@ -4,50 +4,92 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Chat realtime</title>
-    <link rel="stylesheet" href="">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div id="data">
-        {{-- @foreach ($messages as $message)
-        <p><strong> {{$message->name}} </strong>: {{$message->content}} </p>
-        @endforeach --}}
+    <div class="container">
+        <h2>Chat realtime</h2>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Simple chat with Son</div>
+            <div class="panel-body">
+                <div id="data"></div>
+                <div>
+                    <div style="padding: 0 0 10px 0;">
+                        <div>Name: </div>
+                        <input id="name" type="text" name="name" value="Son">
+                    </div>
+                    <div>
+                        <div>Content: </div>
+                        <input id="content" name="content" rows="5" style="width:85%"></input>
+                        <button id="btnSubmit" type="submit" name="send" style="width:14%">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        {{-- <form action="send-message" method="POST"> --}}
-            {{csrf_field()}}
-            Name: <input id="name" type="text" name="name" value="Son">
-            <br>
-            Content: <textarea id="content" name="content" rows="5" style="width:100%"></textarea>
-            <button id="btnSubmit" type="submit" name="send">Send</button>
-        {{-- </form> --}}
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-        <script>
-            $('#btnSubmit').on('click', function(e) {
-                var name = $('#name').val();
-                var content = $('#content').val();
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script>
+        getMessage();
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'send-message',
-                    data: {
-                        '_token': '{{ csrf_field() }}',
-                        name: name,
-                        content: content
-                    },
-                }).done(function (data) {
-                    $('#data').html('<p><strong> '+data.name+'</strong>: '+data.content+'</p>');
-                }).fail(function (error) {
-                });
+        $('#btnSubmit').on('click', function(e) {
+            var name = $('#name').val();
+            var content = $('#content').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/send-message',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    name: name,
+                    content: content
+                },
+            }).done(function (data) {
+                $('#data').html(data);
+            }).fail(function (error) {
             });
-            var link = window.location.hostname + ':6001';
-            var socket = io(link);
+        });
 
-            socket.on('chat:message', function(data) {
+        $('#content').on('keydown', function(e) {
+            var code = e.keyCode || e.which;
+            if(code == 13) {
+                $('#btnSubmit').click();
+                $('#content').val("");
+                return false;
+            }
+            // if (e.keycode == 13) {
+            // }
+        });
+
+        var link = window.location.hostname + ':6001';
+        var socket = io(link);
+
+        socket.on('chat:message', function(data) {
+            getMessage();
                 // console.log(data);
-                $('#data').append('<p><strong> '+data.name+'</strong>: '+data.content+'</p>');
+                // $('#data').append('<p><strong> '+data.name+'</strong>: '+data.content+'</p>');
+                // $('#data').html(data);
             });
-        </script>
-    </div>
+
+        function getMessage() {
+            $.ajax({
+                type: 'POST',
+                url: '/getMessage',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                },
+            }).done(function (data) {
+                $('#data').html(data);
+            }).fail(function (error) {
+            });
+        }
+    </script>
 </body>
 </html>

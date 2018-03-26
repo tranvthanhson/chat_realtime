@@ -1,3 +1,7 @@
-@foreach ($messages as $message)
-<p><strong> {{$message->name}} </strong>: {{$message->content}} </p>
-@endforeach
+@php
+$result = '';
+foreach($messages as $message) {
+    $result = "<p><strong> $message->name </strong>: $message->content </p>" . $result;
+}
+echo $result;
+@endphp

@@ -22,8 +22,6 @@ class RedisEvent implements ShouldBroadcast
      * @return void
      */
     public $message;
-    public $timestamp = 'abc';
-
     public function __construct(Message $message)
     {
         $this->message = $message;
