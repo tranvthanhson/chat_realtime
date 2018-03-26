@@ -23,7 +23,9 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
         <script>
-            var socket = io(window.location.origin + ':6001');
+            var link = window.location.origin + ':6001';
+            link = link.replace(':8000', '');
+            var socket = io(link);
 
             socket.on('chat:message', function(data) {
                 console.log(data);

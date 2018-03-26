@@ -4,7 +4,7 @@ var io = require('socket.io')(port)
 console.log('Connected to port ' + port);
 
 io.on('error', function (socket) {
-	console.log('error')
+	console.log('error___')
 })
 
 io.on('connection', function (socket) {
@@ -12,7 +12,7 @@ io.on('connection', function (socket) {
 })
 
 var Redis = require('ioredis')
-var redis = new Redis(6379)
+var redis = new Redis(1000)
 
 redis.psubscribe("*", function(error, count){
 
