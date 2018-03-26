@@ -8,27 +8,43 @@
 </head>
 <body>
     <div id="data">
-        @foreach ($messages as $message)
+        {{-- @foreach ($messages as $message)
         <p><strong> {{$message->name}} </strong>: {{$message->content}} </p>
-        @endforeach
+        @endforeach --}}
     </div>
     <div>
-        <form action="send-message" method="POST">
+        {{-- <form action="send-message" method="POST"> --}}
             {{csrf_field()}}
-            Name: <input type="text" name="name" value="Son">
+            Name: <input id="name" type="text" name="name" value="Son">
             <br>
-            Content: <textarea name="content" rows="5" style="width:100%"></textarea>
-            <button type="submit" name="send">Send</button>
-        </form>
+            Content: <textarea id="content" name="content" rows="5" style="width:100%"></textarea>
+            <button id="btnSubmit" type="submit" name="send">Send</button>
+        {{-- </form> --}}
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
         <script>
-            var link = window.location.origin + ':6001';
-            link = link.replace(':8000', '');
+            $('#btnSubmit').on('click', function(e) {
+                var name = $('#name').val();
+                var content = $('#content').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'send-message',
+                    data: {
+                        '_token': '{{ csrf_field() }}',
+                        name: name,
+                        content: content
+                    },
+                }).done(function (data) {
+                    $('#data').html('<p><strong> '+data.name+'</strong>: '+data.content+'</p>');
+                }).fail(function (error) {
+                });
+            });
+            var link = window.location.hostname + ':6001';
             var socket = io(link);
 
             socket.on('chat:message', function(data) {
-                console.log(data);
+                // console.log(data);
                 $('#data').append('<p><strong> '+data.name+'</strong>: '+data.content+'</p>');
             });
         </script>

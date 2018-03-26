@@ -8,9 +8,10 @@ use App\Events\RedisEvent;
 
 class RedisController extends Controller
 {
+    public $length = 10;
     public function index()
     {
-        $messages = Message::all();
+        $messages = Message::orderBy('id', 'desc')->take(5)->get();
 
         return view('chat', compact('messages'));
     }
@@ -23,6 +24,8 @@ class RedisController extends Controller
             $e = new RedisEvent($messages)
         );
 
-        return redirect()->back();
+        $messages = Message::orderBy('id', 'desc')->take(5)->get();
+
+        return view('chat-partial', compact('messages'));
     }
 }

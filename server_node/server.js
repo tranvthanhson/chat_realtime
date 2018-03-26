@@ -4,11 +4,11 @@ var io = require('socket.io')(port)
 console.log('Connected to port ' + port);
 
 io.on('error', function (socket) {
-	console.log('error___')
+	console.log('error')
 })
 
 io.on('connection', function (socket) {
-	console.log('New person connected' + socket.id)
+	console.log('New person connected: ' + socket.id)
 })
 
 var Redis = require('ioredis')
