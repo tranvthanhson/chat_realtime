@@ -4,17 +4,13 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Message;
 use Log;
 
 class RedisEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use SerializesModels;
 
     /**
      * Create a new event instance.
@@ -22,7 +18,9 @@ class RedisEvent implements ShouldBroadcast
      * @return void
      */
     public $message;
-    public function __construct(Message $message)
+    public $status;
+
+    public function __construct(Message $message, $status)
     {
         $this->message = $message;
     }
@@ -34,11 +32,11 @@ class RedisEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['chat'];
+        return ['test-channel'];
     }
 
-    public function broadcastAs()
-    {
-        return 'message';
-    }
+    // public function broadcastAs()
+    // {
+    //     return 'son';
+    // }
 }

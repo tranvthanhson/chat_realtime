@@ -26,7 +26,7 @@ class RedisController extends Controller
         $messages = Message::create($request->all());
 
         event(
-            $e = new RedisEvent($messages)
+            $e = new RedisEvent($messages, 'sda')
         );
 
         $messages = $this->getLastMessages($this->length);

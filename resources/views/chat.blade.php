@@ -64,26 +64,22 @@
                 $('#content').val("");
                 return false;
             }
-            // if (e.keycode == 13) {
-            // }
         });
 
         var link = window.location.hostname + ':6001';
         var socket = io(link);
 
-        socket.on('chat:message', function(data) {
+        socket.on('test-channel:message', function(data) {
+        // socket.on('test-channel:App\\Events\\RedisEvent', function(data) {
             getMessage();
-                // console.log(data);
-                // $('#data').append('<p><strong> '+data.name+'</strong>: '+data.content+'</p>');
-                // $('#data').html(data);
-            });
+        });
 
         function getMessage() {
             $.ajax({
                 type: 'POST',
                 url: '/getMessage',
                 data: {
-                    '_token': '{{ csrf_token() }}',
+                    _token: '{{ csrf_token() }}',
                 },
             }).done(function (data) {
                 $('#data').html(data);
