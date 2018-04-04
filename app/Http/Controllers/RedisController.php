@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Message;
 use App\Events\RedisEvent;
+use App\Events\TypingEvent;
 
 class RedisController extends Controller
 {
@@ -26,7 +28,7 @@ class RedisController extends Controller
         $messages = Message::create($request->all());
 
         event(
-            $e = new RedisEvent($messages, 'sda')
+            $e = new RedisEvent($messages, Message::EVENTS['MESSAGE'])
         );
 
         $messages = $this->getLastMessages($this->length);
@@ -39,5 +41,14 @@ class RedisController extends Controller
         $messages = $this->getLastMessages($this->length);
 
         return view('chat-partial', compact('messages'));
+    }
+
+    public function typing(Request $request)
+    {
+        event(
+            $e = new TypingEvent('son')
+        );
+
+        return 'Son typing';
     }
 }

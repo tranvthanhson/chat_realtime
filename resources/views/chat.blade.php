@@ -39,6 +39,22 @@
     <script>
         getMessage();
 
+        // $('#content').on('keyup', function(e) {
+        //     if ($('#content').val() !== '') {
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: '/typing',
+        //             data: {
+        //                 '_token': '{{ csrf_token() }}'
+        //             },
+        //         }).done(function (data) {
+        //             // $('#data').html(data);
+        //             console.log('typing event send');
+        //         }).fail(function (error) {
+        //         });
+        //     }
+        // });
+
         $('#btnSubmit').on('click', function(e) {
             var name = $('#name').val();
             var content = $('#content').val();
@@ -69,9 +85,15 @@
         var link = window.location.hostname + ':6001';
         var socket = io(link);
 
-        socket.on('test-channel:message', function(data) {
+        socket.on('chat:message', function(data) {
         // socket.on('test-channel:App\\Events\\RedisEvent', function(data) {
             getMessage();
+        });
+
+        socket.on('chat:typing', function(data) {
+        // socket.on('test-channel:App\\Events\\RedisEvent', function(data) {
+            // getMessage();
+            console.log('typing....................');
         });
 
         function getMessage() {
